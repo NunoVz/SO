@@ -16,12 +16,13 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-typedef struct FIFO
+typedef struct Fifo
 {
-    int tarefa, instrucoes, tempo_exec;
+    int tarefa, instrucoes;
+    int prioridade;
+    time_t tempo_exec;
     struct Fifo *next;
-
-} Fifo;
+};
 
 typedef struct SharedMemory
 {
@@ -37,6 +38,7 @@ typedef struct SharedMemory
 typedef struct EdgeServer
 {
     char name[20];
+    int fd_unnamed[2];
     struct EdgeServer *next;
     int tarefas;
     int manutencoes;
@@ -67,6 +69,9 @@ void Monitor();
 void MaintenanceManager();
 void *CPU();
 void EdgeServer();
+void SortLinkedList();
+void swapinformation(struct Fifo *node);
 int read_conf(char *filename);
+void printlist(struct Fifo *headfifo);
 
 #endif // UNTITLED1_SystemManager_H

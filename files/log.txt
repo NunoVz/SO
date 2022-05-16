@@ -1,12 +1,12 @@
-01:37:08  [CONSOLE] TaskManager criado
-01:37:08  [CONSOLE] MaintenanceManager criado
-01:37:08  [CONSOLE] EDGE SERVER criado
-01:37:08  [CONSOLE] EDGE SERVER criado
-01:37:08  [CONSOLE] EDGE SERVER criado
-01:37:08  [CONSOLE] Monitor criado
-01:37:08  [CONSOLE] CPU criado
-01:37:08  [CONSOLE] CPU criado
-01:37:08  [CONSOLE] CPU criado
-01:37:08  [CONSOLE] CPU criado
-01:37:08  [CONSOLE] CPU criado
-01:37:08  [CONSOLE] CPU criado
+06:27:48  [CONSOLE] TaskManager criado
+06:27:48  [CONSOLE] Monitor criado
+06:27:48  [CONSOLE] MaintenanceManager criado
+06:27:48  [CONSOLE] EDGE SERVER criado
+06:27:48  [CONSOLE] CPU criado
+06:27:48  [CONSOLE] CPU criado
+06:27:48  [CONSOLE] EDGE SERVER criado
+06:27:48  [CONSOLE] EDGE SERVER criado
+06:27:48  [CONSOLE] CPU criado
+06:27:48  [CONSOLE] CPU criado
+06:27:48  [CONSOLE] CPU criado
+06:27:48  [CONSOLE] CPU criado

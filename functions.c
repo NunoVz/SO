@@ -5,7 +5,8 @@ int shmid, msqid;
 sem_t *mutex;
 FILE *log_file;
 char CONFIG_FILE[20];
-
+struct Fifo *headfifo = NULL;
+struct Fifo *sorted = NULL;
 void init_sem()
 {
     sem_unlink("MUTEX");
@@ -183,17 +184,6 @@ void create_proc(void (*function)(), void *arg)
     }
 }
 
-void printList(struct EdgeServer *n)
-{
-    int i = 0;
-    while (n != NULL)
-    {
-        printf("%s\n", n->name);
-        n = n->next;
-        i++;
-    }
-}
-
 //-----------------------------TaskManger
 void taskmanager()
 {
@@ -204,7 +194,7 @@ void taskmanager()
     // mkfifo(<pathname>,<permission>)
     mkfifo(TASK_MANAGER, 0666);
     char str1[20];
-    Fifo *head = NULL;
+    int cont = 1;
 
     while (1)
     {
@@ -229,6 +219,7 @@ void taskmanager()
                     if (strcmp(ptr, "EXIT") == 0)
                     {
                         printf("Porta-te");
+                        printlist(headfifo);
                         close(fd1);
                         exit(0);
                     }
@@ -253,14 +244,95 @@ void taskmanager()
                 ptr = strtok(NULL, " ");
                 cont++;
             }
-            if (head == NULL && cont == 3)
+
+            if (cont == 3)
             {
-                // Fifo node = (struct Fifo *)malloc(sizeof(struct Fifo ));
+                struct Fifo *newnode = (struct Fifo *)malloc(sizeof(struct Fifo));
+                newnode->instrucoes = instrucoes;
+                newnode->prioridade = 0;
+                newnode->tarefa = tarefa;
+                time_t seconds;
+                time(&seconds);
+                newnode->tempo_exec = seconds + tempo_exec;
+                newnode->next = headfifo;
+                headfifo = newnode;
+                SortLinkedList();
             }
-            close(fd1);
         }
+        close(fd1);
     }
+
     exit(0);
+}
+void SortLinkedList()
+{
+    struct Fifo *node = NULL, *temp = NULL;
+
+    node = headfifo;
+    // temp = node;//temp node to hold node data and next link
+    while (node != NULL)
+    {
+        temp = node;
+        while (temp->next != NULL) // travel till the second last element
+        {
+            if (temp->tempo_exec > temp->next->tempo_exec) // compare the data of the nodes
+            {
+                swapinformation(temp);
+            }
+            temp = temp->next; // move to the next element
+        }
+        node = node->next; // move to the next node
+    }
+    node = headfifo;
+    int cont = 1;
+    while (node != NULL)
+    {
+        node->prioridade = cont;
+        cont++;
+        node = node->next;
+    }
+}
+void swapinformation(struct Fifo *node)
+{
+    int tempvar; // temp variable to store node data
+    // tempo
+    tempvar = node->tempo_exec;
+    node->tempo_exec = node->next->tempo_exec; // swap the data
+    node->next->tempo_exec = tempvar;
+
+    // Tarefas
+    tempvar = node->tarefa;
+    node->tarefa = node->next->tarefa; // swap the data
+    node->next->tarefa = tempvar;
+
+    // Instrucoes
+    tempvar = node->instrucoes;
+    node->instrucoes = node->next->instrucoes; // swap the data
+    node->next->instrucoes = tempvar;
+
+    // Prioridade
+    tempvar = node->prioridade;
+    node->prioridade = node->next->prioridade; // swap the data
+    node->next->prioridade = tempvar;
+}
+int Tam_Lista(struct Fifo *headfifo)
+{
+    int cont = 0;
+    struct Fifo *node = headfifo;
+    while (node != NULL)
+    {
+        cont++;
+        node = node->next;
+    }
+    return cont;
+}
+void *Scheduler()
+{
+    writelog("[CONSOLE] CPU criado");
+}
+void *Dispatcher()
+{
+    writelog("[CONSOLE] CPU criado");
 }
 //-----------------------------Monitor
 void Monitor()

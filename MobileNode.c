@@ -15,12 +15,9 @@ int main(int argc, char *argv[])
 
         char arr[20];
         fd = open(TASK_MANAGER, O_WRONLY);
-        for (int i = 0; i < atoi(argv[1]); i++)
-        {
-            sprintf(arr, "%d %s %s", getpid() + i, argv[3], argv[4]);
-            sleep(atoi(argv[2]));
-            write(fd, arr, strlen(arr) + 1);
-        }
+
+        sprintf(arr, "%d %s %s", getpid(), argv[3], argv[4]);
+        write(fd, arr, strlen(arr) + 1);
 
         close(fd);
         exit(0);
